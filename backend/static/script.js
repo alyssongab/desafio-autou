@@ -6,7 +6,7 @@ const categoriaSpan = document.getElementById('category');
 const sugestaoDiv = document.getElementById('suggestion');
 const warning = document.getElementById('warn');
 
-const BACKEND_URL = 'http://127.0.0.1:5000/classificar'; 
+const BACKEND_URL = '/classificar';
 
 function mostrarErro(message) {
     warning.textContent = message;
