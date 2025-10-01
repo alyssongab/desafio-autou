@@ -45,7 +45,7 @@ form.addEventListener('submit', async (event) => {
             sugestaoDiv.textContent = data.resposta;
             resultDiv.classList.remove('hidden');
         } else {
-            showError(`Erro do servidor: ${data.error}`);
+            mostrarErro(`Erro: ${data.error}`);
         }
 
     } catch (error) {
