@@ -4,12 +4,24 @@ const loadingDiv = document.getElementById('loading');
 const resultDiv = document.getElementById('result-container');
 const categoriaSpan = document.getElementById('category');
 const sugestaoDiv = document.getElementById('suggestion');
+const warning = document.getElementById('warn');
 
 const BACKEND_URL = 'http://127.0.0.1:5000/classificar'; 
+
+function mostrarErro(message) {
+    warning.textContent = message;
+    warning.className = 'block mt-2 text-red-400 text-sm';
+}
+
+function limparMensagens() {
+    warning.textContent = '';
+    warning.className = 'hidden';
+}
 
 form.addEventListener('submit', async (event) => {
 
     event.preventDefault();
+    limparMensagens();
     
     loadingDiv.classList.remove('hidden');
     resultDiv.classList.add('hidden');
@@ -33,12 +45,12 @@ form.addEventListener('submit', async (event) => {
             sugestaoDiv.textContent = data.resposta;
             resultDiv.classList.remove('hidden');
         } else {
-            alert(`Erro do servidor: ${data.error}`);
+            showError(`Erro do servidor: ${data.error}`);
         }
 
     } catch (error) {
         console.error('Falha na comunicação com o backend:', error);
-        alert('Não foi possível conectar ao servidor. Verifique se o backend está rodando e tente novamente.');
+        mostrarErro('Não foi possível conectar ao servidor. Verifique se o backend está rodando e tente novamente.');
     } finally {
 
         loadingDiv.classList.add('hidden');

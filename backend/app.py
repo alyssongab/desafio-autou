@@ -3,6 +3,8 @@ import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 load_dotenv()
 
@@ -28,6 +30,25 @@ def classifica_texto(text):
     response = query(payload)
     return response
 
+def valida_texto(text, min_chars=20, min_content_words=2):
+    """
+    Verifica se um texto tem o mínimo de substância para ser analisado.
+    """
+    if len(text) < min_chars:
+        return False
+
+    words = word_tokenize(text.lower())
+    
+    # palavras que não são stop words
+    stop_words_pt = set(stopwords.words('portuguese'))
+    content_words = [word for word in words if word.isalpha() and word not in stop_words_pt]
+    
+    # 4. Verifica se o número de palavras de conteúdo é suficiente
+    if len(content_words) < min_content_words:
+        return False
+        
+    return True
+
 @app.route("/classificar", methods=['POST'])
 def controla_classificacao():
     data = request.get_json()
@@ -36,6 +57,9 @@ def controla_classificacao():
         return jsonify({"error": "O campo 'text' está faltando ou está vazio."}), 400
     
     email_text = data['text']
+
+    if not valida_texto(email_text):
+        return jsonify({"error": "O texto fornecido é muito curto ou não contém conteúdo suficiente."}), 400
 
     try:
         resultado_ia = classifica_texto(email_text)
@@ -56,10 +80,10 @@ def controla_classificacao():
         })
     
     except requests.exceptions.RequestException as e:
-        return jsonify({"erro": f"Erro ao conectar com a API Hugging Face: {e}"}), 503
+        return jsonify({"error": f"Erro ao conectar com a API Hugging Face: {e}"}), 503
     
     except Exception as e:
-        return jsonify({"erro": f"Ocorreu um erro inesperado: {e}"}), 500
+        return jsonify({"error": f"Ocorreu um erro inesperado: {e}"}), 500
     
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
