@@ -2,6 +2,7 @@ import os
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask import render_template
 from dotenv import load_dotenv
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -11,7 +12,6 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# API_URL = "https://router.huggingface.co/hf-inference/models/facebook/bart-large-mnli"
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
 API_TOKEN = os.getenv("HF_API_TOKEN")
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
@@ -43,11 +43,14 @@ def valida_texto(text, min_chars=20, min_content_words=2):
     stop_words_pt = set(stopwords.words('portuguese'))
     content_words = [word for word in words if word.isalpha() and word not in stop_words_pt]
     
-    # 4. Verifica se o número de palavras de conteúdo é suficiente
     if len(content_words) < min_content_words:
         return False
         
     return True
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route("/classificar", methods=['POST'])
 def controla_classificacao():
