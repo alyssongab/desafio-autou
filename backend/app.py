@@ -4,10 +4,22 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask import render_template
 from dotenv import load_dotenv
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 load_dotenv()
+
+def init_nltk():
+    try:
+        nltk.download('punkt', quiet=True)
+        nltk.download('punkt_tab', quiet=True)
+        nltk.download('stopwords', quiet=True)
+        print("Recursos NLTK inicializados com sucesso")
+    except Exception as e:
+        print(f"Erro ao inicializar NLTK: {e}")
+
+init_nltk()
 
 app = Flask(__name__)
 CORS(app)
@@ -37,16 +49,23 @@ def valida_texto(text, min_chars=20, min_content_words=2):
     if len(text) < min_chars:
         return False
 
-    words = word_tokenize(text.lower())
-    
-    # palavras que não são stop words
-    stop_words_pt = set(stopwords.words('portuguese'))
-    content_words = [word for word in words if word.isalpha() and word not in stop_words_pt]
-    
-    if len(content_words) < min_content_words:
-        return False
+    try:
+        words = word_tokenize(text.lower())
         
-    return True
+        # palavras que não são stop words
+        stop_words_pt = set(stopwords.words('portuguese'))
+        content_words = [word for word in words if word.isalpha() and word not in stop_words_pt]
+        
+        if len(content_words) < min_content_words:
+            return False
+            
+        return True
+    
+    except Exception as e:
+        print(f"Erro no NLTK, usando validação simples: {e}")
+        # Fallback: validação simples sem NLTK
+        words = text.split()
+        return len(words) >= min_content_words
 
 @app.route("/")
 def index():
