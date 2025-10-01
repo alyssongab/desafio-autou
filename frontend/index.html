@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classificador de Emails</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-900 text-gray-300 font-sans flex items-center justify-center min-h-screen p-4">
+
+    <main class="bg-gray-800 border border-gray-700 w-full max-w-3xl mx-auto p-8 rounded-lg shadow-lg">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Classificador de Emails</h1>
+            <p class="text-gray-400">Cole o texto de um email abaixo para analisá-lo e receber uma sugestão de resposta.</p>
+        </header>
+        
+        <form id="email-form">
+            <textarea 
+                id="email-text" 
+                rows="10" 
+                placeholder="Aguardando o texto do email..." 
+                required
+                class="w-full bg-gray-700 text-gray-200 p-4 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition-shadow resize-none"
+            ></textarea>
+            
+            <button 
+                type="submit"
+                class="w-full mt-4 bg-green-800 text-white font-bold py-3 px-4 rounded-md hover:cursor-pointer hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+            >
+                Classificar Email
+            </button>
+        </form>
+        
+        <div id="loading" class="hidden mt-6 text-center">
+            <div class="w-8 h-8 border-4 border-gray-600 border-t-green-500 rounded-full animate-spin mx-auto mb-2"></div>
+            <p>Analisando com a IA...</p>
+        </div>
+
+        <div id="result-container" class="hidden mt-8 p-6 bg-gray-900 border border-gray-700 rounded-lg text-left">
+            <h2 class="text-xl font-bold text-white mb-4">Resultado da Análise</h2>
+            <p class="mb-4">
+                <strong class="text-gray-300">Categoria:</strong> 
+                <span id="category" class="font-mono bg-green-900/50 text-green-300 py-1 px-2 rounded-md"></span>
+            </p>
+            <p class="mb-2"><strong class="text-gray-300">Sugestão de Resposta:</strong></p>
+            <div id="suggestion" class="bg-gray-800 p-4 border border-dashed border-gray-600 rounded-md text-gray-300"></div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
