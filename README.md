@@ -255,7 +255,7 @@ Classifica um email e retorna sugestão de resposta.
 
 **Alysson Gabriel** - Desenvolvedor Full-Stack
 - 💼 **GitHub**: [@alyssongab](https://github.com/alyssongab)
-- 🔗 **LinkedIn**: [Alysson Gabriel](https://www.linkedin.com/in/alysson-gabriel/)
+- 🔗 **LinkedIn**: [Alysson Gabriel](https://www.linkedin.com/in/alyssongab/)
 - � **Email**: alysson.gabriel61@gmail.com
 
 ## 🔗 Demonstração
